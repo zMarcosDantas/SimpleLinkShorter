@@ -2,7 +2,7 @@
 <body>
     <div id="alert" class="container alert alert-success mt-3 d-none text-center" role="alert"></div>
     <div class="container mt-2">
-        <input id="password" type="password" class="form-control" placeholder="Edit Password">
+        <input id="password" type="password" class="form-control" placeholder="APP Password">
     </div>  
     <main id="links" class="container mt-3 p-3">   
         <% Object.entries(links).forEach(el => { %>
@@ -41,7 +41,7 @@
           <input id="editID" class="form-control" type="text" placeholder="ID">
           <input id="editLink" class="form-control mt-2" type="text" placeholder="URL">
           <textarea id="editTextContent" class="form-control mt-2" placeholder="Text Content"></textarea>
-          <input id="editTimer" class="form-control mt-2 mb-2" type="number" min="0" placeholder="0 or Empty = Infinite">
+          <input id="editTimer" class="form-control mt-2 mb-2" type="number" min="0" placeholder="0 or Empty = Non-Expirable Link (minutes)">
           <input id="editOverwrite" class="form-check-input mt-2" type="checkbox" checked>
           <label class="form-check-label" for="editOverwrite">Allow Overwrite</label>
         </div>
