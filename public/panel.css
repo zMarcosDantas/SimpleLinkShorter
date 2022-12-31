@@ -1,0 +1,19 @@
+#links {
+    background-color: #e2e2e2;
+    border-radius: 10px;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, #aaaaaa 75%, transparent);
+}
+
+.icon:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.closeMark {
+    margin-left: 5px;
+}

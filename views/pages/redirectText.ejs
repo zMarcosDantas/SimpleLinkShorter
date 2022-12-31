@@ -1,0 +1,34 @@
+<%- include("../partials/header", {title: "[zMD] Create Redirect Link", description: "Page to create the link to redirect.", panel: false, redirect: true}) %>
+<body>
+
+    <main class="container mt-3 text-center">
+        <div id="copyDiv">
+            <i class="icon fa-regular fa-clipboard"></i>&nbsp;<span>Copy Text Content</span>
+        </div>
+        
+        <textarea id="textbox" class="form-control mt-2" type="textarea" readonly><%= textContent %></textarea>
+        <a href="<%= redirect %>" target="_blank" class="btn btn-primary form-control mt-3">Redirect!</a>
+
+        
+    </main>
+
+    <div id="alert" class="container alert alert-success mt-3 d-none text-center" role="alert"></div>  
+
+    <%- include("../partials/scripts") %>
+
+    <script>
+        const alert = document.querySelector("#alert");
+        const icon = document.querySelector(".icon");
+        const textarea = document.querySelector("#textbox");
+
+        icon.onclick = function () {
+            copyText(textarea.innerHTML).then(() => {
+                alertStatus(1, "Text copied to clipboard!");
+            }).catch(err => {
+                alertStatus(0, err);
+            });
+        }
+        
+    </script>
+</body>
+</html>

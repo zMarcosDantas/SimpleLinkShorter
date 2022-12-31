@@ -1,0 +1,181 @@
+<%- include("../partials/header", {title: "[zMD] Create Redirect Link", description: "Page to create the link to redirect.", panel: true, redirect: false}) %>
+<body>
+    <div id="alert" class="container alert alert-success mt-3 d-none text-center" role="alert"></div>
+    <div class="container mt-2">
+        <input id="password" type="password" class="form-control" placeholder="Edit Password">
+    </div>  
+    <main id="links" class="container mt-3 p-3">   
+        <% Object.entries(links).forEach(el => { %>
+            <div class="row">
+                <div id="<%= el[0]%>" class="col-12 d-flex justify-content-between align-items-center p-2">
+                    <div dataContent="<%= el[1].textContent %>" redirectContent="<%= el[1].redirect %>">
+                        <span><%= el[0] %> | </span>
+                        <a class="text-break" href="<%= el[1].redirect %>" target="_blank"><%= el[1].redirect.replace(/[?;].*/g, ""); %></a>
+                        <% if (el[1].expireTime) { %>
+                            <span>- Expiring in: </span><span class="timer"><%= ((el[1].expireTime - new Date().getTime())/1000/60).toFixed(3); %></span><span> minutes.</span>
+                        <% }; %>
+                    </div>
+
+                    <div class="d-flex flex-nowrap flex-row">
+                        <% if (el[1].overwrite) { %>
+                            <i class="icon fa-solid fa-pen-to-square" onclick="editElement(this);" data-bs-toggle="modal" data-bs-target="#editModal"></i>
+                        <% }; %>
+                        <i class="closeMark icon fa-solid fa-circle-xmark" onclick="deleteElement(this);" data-bs-toggle="modal" data-bs-target="#deleteModal"></i>
+                    </div>
+                </div>
+                <div class="line"></div>
+            </div>
+            
+        <% }) %> 
+    </main>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editModalTitle">Are you sure you want to edit this URL?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="editModalBody" class="modal-body">
+          <input id="editID" class="form-control" type="text" placeholder="ID">
+          <input id="editLink" class="form-control mt-2" type="text" placeholder="URL">
+          <textarea id="editTextContent" class="form-control mt-2" placeholder="Text Content"></textarea>
+          <input id="editTimer" class="form-control mt-2 mb-2" type="number" min="0" placeholder="0 or Empty = Infinite">
+          <input id="editOverwrite" class="form-check-input mt-2" type="checkbox" checked>
+          <label class="form-check-label" for="editOverwrite">Allow Overwrite</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="buttonEdit" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="submitEdit(this);">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalTitle">Are you sure you want to delete this URL?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="deleteModalBody" class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="buttonDelete" type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="submitDelete(this);">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include("../partials/scripts") %>
+  <script>
+    
+    const alert             = document.querySelector("#alert");
+    
+    const deleteModal       = new bootstrap.Modal('#deleteModal', {
+        keyboard: false
+    });
+
+    const deleteModalTitle  = document.querySelector("#deleteModalTitle");
+    const deleteModalBody   = document.querySelector("#deleteModalBody");
+    const deleteModalSubmit = document.querySelector("#buttonDelete");
+
+    const editModal         = new bootstrap.Modal('#editModal', {
+        keyboard: false
+    });
+
+    const editTextContent   = document.querySelector("#editTextContent");
+    const editModalTitle    = document.querySelector("#editModalTitle");
+    const editID            = document.querySelector("#editID");
+    const editLink          = document.querySelector("#editLink");
+    const editTimer         = document.querySelector("#editTimer");
+    const editOverwrite     = document.querySelector("#editOverwrite");
+    const editModalSubmit   = document.querySelector("#buttonEdit");
+
+    const links             = document.querySelector("#links");
+    const timer             = document.querySelectorAll(".timer");
+    const password          = document.querySelector("#password");
+    const savedPass         = localStorage.getItem("pass");
+    var lastUrl;
+
+    if(savedPass) {
+        password.value = savedPass;
+    }
+
+    password.onchange = (evt) => {
+        localStorage.setItem("pass", evt.target.value)
+    }
+
+    setInterval(() => {
+        timer.forEach(el => {
+            el.innerText = (((el.innerText * 60) - 1) / 60).toFixed(3);
+            if(el.innerText <= 0) {
+                el.parentElement.parentElement.parentElement.remove();
+            }
+        })
+    }, 1000);
+
+    function editElement(element) {
+        let parent = element.parentElement.parentElement;
+        let link   = parent.firstElementChild.attributes.redirectContent.value;
+        let textContent = parent.firstElementChild.attributes.dataContent.value;
+        editTextContent.value = textContent;
+        editLink.value   = link;
+        editModalSubmit.ariaId = editID.value = parent.id;
+    }
+
+    function deleteElement(element) {
+        let parent = element.parentElement.parentElement;
+        let link   = parent.firstElementChild.attributes.redirectContent.value;
+        deleteModalBody.innerText  = `ID: ${parent.id}\nLink: ${link}`;
+        deleteModalSubmit.ariaId = parent.id;
+    }
+
+    function submitDelete(element) {
+        if(!element.ariaId) return;
+        axios.post("/<%= deleteRoute %>", {"id": element.ariaId, password: password.value}).then(res => {
+            if(res.data.status) {
+                alertStatus(1, res.data.message);
+                document.getElementById(element.ariaId).parentElement.remove();
+                deleteModal.hide();
+            } else {
+                alertStatus(0, res.data.message);
+                document.getElementById(element.ariaId).parentElement.remove();
+            }
+            
+        }).catch((err) => {
+            alertStatus(0, err);
+        })
+    };
+
+    function submitEdit(element) {
+        if(!element.ariaId) return;
+        if(!editID.value && !editLink.value) return;
+        let infinite = false;
+        if(!editTimer.value) infinite = true;
+        axios.post("/<%= editRoute %>", {id: element.ariaId, password: password.value, newId: editID.value, infinite, redirect: editLink.value, overwrite: editOverwrite.checked, timer: editTimer.value, textContent: editTextContent.value}).then(res => {
+            if(res.data.status) {
+                let el = document.getElementById(element.ariaId)
+                let elChild = el.firstElementChild;
+                elChild.attributes.dataContent.value = editTextContent.value;
+                elChild.attributes.redirectContent.value = editLink.value;
+                el.id = editID.value;
+                alertStatus(1, res.data.message);
+            } else {
+                alertStatus(0, res.data.message);
+                document.getElementById(element.ariaId).parentElement.remove();
+            }
+            
+        }).catch((err) => {
+            console.log(err);
+            alertStatus(0, err);
+        })
+    }
+
+  </script>
+</body>
+</html>

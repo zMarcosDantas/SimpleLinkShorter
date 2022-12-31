@@ -1,0 +1,5 @@
+#alert.alert-success:hover {
+    cursor: pointer;
+    box-shadow: 0px 5px #006200;
+    transition: all 0.2s;
+}
