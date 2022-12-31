@@ -43,7 +43,7 @@
                 if(res.data.status) {
                     let url = (window.location.href + "/").replace("/<%= createRoute %>/", "/<%= redirectRoute %>/") + res.data.id;
                     lastUrl = url;
-                    copyText(url).then(() => alertStatus(1, "O link gerado foi copiado!\n" + url)).catch(err => alertStatus(0, err));
+                    copyText(url).then(() => alertStatus(1, "The URL was generated!\n" + url)).catch(err => alertStatus(0, err));
                 } else {
                     lastUrl = "";
                     alertStatus(0, res.data.message)
@@ -55,7 +55,7 @@
             if(!lastUrl) return;
             try {
                 copyText(lastUrl);
-                alertStatus(1, "Link Copiado!\n"+lastUrl);
+                alertStatus(1, "Copied URL!\n"+lastUrl);
             } catch(err) {
                 alertStatus(0, err);
             }
