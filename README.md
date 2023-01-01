@@ -16,7 +16,7 @@ This is a simple link shorter using Express, EJS, Bootstrap and JSON. Simple-as-
 You can configure the app in the .env file. You can use the working sample provided.
 ### Screenshots
 
-![Create Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_create.png?raw=true)
-![List Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_list.png?raw=true)
-![List Route Edit](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_list_edit.png?raw=true)
-![Redirect Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_redirect.png?raw=true)
+![Create Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_create1.png?raw=true)
+![List Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_list1.png?raw=true)
+![List Route Edit](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_list_edit1.png?raw=true)
+![Redirect Route](https://github.com/zMarcosDantas/SimpleLinkShorter/blob/main/screenshots/route_redirect1.png?raw=true)
