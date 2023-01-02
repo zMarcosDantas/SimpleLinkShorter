@@ -1,7 +1,7 @@
 
 # SimpleLinkShorter
 
-This is a simple link shorter using Express, EJS, Bootstrap and JSON. Simple-as-possible.
+This is a simple link shortener using Express, EJS, Bootstrap and JSON. Simple-as-possible (no database used).
 
 ## Routes
 
